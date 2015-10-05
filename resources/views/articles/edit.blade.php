@@ -2,11 +2,11 @@
 @section('content')
 
 
-    <h3 class="text-center">Create a new Article</h3>
+    <h3 class="text-center">Edit: {!! $article->title !!}</h3>
     <hr>
 
     <div class="col-md-5">
-        {!! Form::open(['url' => 'articles']) !!}
+        {!! Form::model($article,['method'=> 'PATCH', 'action' => ['ArticleController@update',$article->id]]) !!}
         <div class="form-group">
             {!! Form::label('title','Title') !!}
             {!! Form::text('title',null,['class'=>'form-control']) !!}

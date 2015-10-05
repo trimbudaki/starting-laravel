@@ -3,52 +3,86 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-use Illuminate\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateArticleRequest;
 use Carbon\Carbon;
-use Request;
+use Illuminate\Http\Request;
+use Illuminate\Http\Requests;
+
 
 class ArticleController extends Controller
 {
-    public function index(){
+    /**Display All Articles DESCENDING->latest where published at is less or equal with now
+     * @return \Illuminate\View\View
+     */
+    public function index()
+    {
 
-        $articles= \App\Article::all();
+        $articles = Article::latest()->get();
 
-        return  view('articles.index',compact('articles'));
+        return view('articles.index', compact('articles'));
     }
 
-    public function create(){
 
+    /**Display Cilicked Article and return to each article template
+     * @param $id
+     * @return \Illuminate\View\View
+     */
+    public function show($id)
+    {
+        $article = Article::findOrFail($id);
+
+        return view('articles.show', compact('article'));
+    }
+
+
+    /**Send us to the Create Article Template
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
         return view('articles.create');
-
-
-    }
-    public function show($id){
-
-     $article = Article::findOrFail($id);
-
-        return view('articles.show',compact('article'));
-
     }
 
-    public function store(){
 
+    /**Create article send tho the model check and display to the Articles list
+     * @param CreateArticleRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
 
-              /*  $input = Request::all();
+    public function store(CreateArticleRequest $request)
+    {
+        //  $input = Request::all();
+        //  Article::create($input);
 
-                $input['published_at'] = Carbon::now();
-                $input['created_at'] = Carbon::now();
+        Article::create($request->all());    /*this is the same as above but more clean*/
 
-                Article::create($input);
-        */
-
-
-        $input = Request::all();
-
-
-        return $input;
+        return redirect('articles');
     }
 
+
+    /**send us to the article update template , and forms contain all values of article
+     * @param $id
+     * @return \Illuminate\View\View
+     */
+    public function edit($id)
+    {
+        $article = Article::findOrFail($id);
+
+        return view('articles.edit',compact('article'));
+    }
+
+
+    /**
+     * @param $id
+     */
+    public function update($id, Request $request){
+
+        $article = Article::findOrFail($id);
+
+        $article->update($request->all());
+
+        return redirect('articles');
+    }
 
 
 }
