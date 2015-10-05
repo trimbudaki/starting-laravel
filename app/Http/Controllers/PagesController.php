@@ -24,7 +24,14 @@ class PagesController extends Controller
         return view('about', compact('people'));
     }
 
+
     public function contact(){
         return view('contact');
     }
+
+
+    public function app(){
+        return view('app');
+    }
+
 }

@@ -45,7 +45,6 @@ class ArticleController extends Controller
 
         $input = Request::all();
 
-        Article::create($input);
 
         return $input;
     }
